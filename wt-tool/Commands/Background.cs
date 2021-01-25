@@ -1,5 +1,7 @@
 ﻿using CommandLine;
 using Newtonsoft.Json.Linq;
+using System;
+using System.Net;
 using System.Text.RegularExpressions;
 
 namespace wt_tool.Commands
@@ -50,7 +52,18 @@ namespace wt_tool.Commands
 
             if (!string.IsNullOrEmpty(Image))
             {
-                defaultProfile["backgroundImage"] = Image;
+                if (!CheckURLValid(Image))
+                {
+                    defaultProfile["backgroundImage"] = Image;
+                } else
+                {
+                    Console.WriteLine($"Downloading Image: {Image}");
+                    using var wc = new WebClient();
+                    var fileName = System.IO.Path.GetFileName(Image);
+                    wc.DownloadFile(Image, System.IO.Path.Combine(wt_tool.Program.ApplicationCache, fileName));
+
+                    defaultProfile["backgroundImage"] = System.IO.Path.Combine(wt_tool.Program.ApplicationCache, fileName);
+                }
             }
 
             if (ImageAlignment != null)
@@ -86,12 +99,17 @@ namespace wt_tool.Commands
 
         protected static bool CheckValidFormatHtmlColor(string inputColor)
         {
-            //regex from http://stackoverflow.com/a/1636354/2343
             if (Regex.Match(inputColor, "^#(?:[0-9a-fA-F]{3}){1,2}$").Success)
                 return true;
 
             var result = System.Drawing.Color.FromName(inputColor);
             return result.IsKnownColor;
+        }
+
+        public static bool CheckURLValid(string source)
+        {
+            Uri uriResult;
+            return Uri.TryCreate(source, UriKind.Absolute, out uriResult) && uriResult.Scheme == Uri.UriSchemeHttp || uriResult.Scheme == Uri.UriSchemeHttps;
         }
     }
 }

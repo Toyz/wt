@@ -14,6 +14,9 @@ namespace wt_tool
         private static string windowsTerminalPath = string.Empty;
         private static Terminal.Terminal Terminal;
 
+        public static readonly string ApplicationStorage = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "wt-tool");
+        public static readonly string ApplicationCache = Path.Combine(ApplicationStorage, "cache");
+
         public static void Main(string[] args)
         {
             windowsTerminalPath = FindWindowsTermianlSettings();
@@ -24,6 +27,10 @@ namespace wt_tool
             }
 
             var types = LoadVerbs();
+
+            Directory.CreateDirectory(ApplicationStorage);
+            Directory.CreateDirectory(ApplicationCache);
+
 
             Parser.Default.ParseArguments(args, types)
                 .WithParsed(Run)
