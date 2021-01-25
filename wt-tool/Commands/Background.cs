@@ -35,13 +35,13 @@ namespace wt_tool.Commands
         [Option('a', "alignment", Required = false, HelpText = "Sets how the background image aligns to the boundaries of the window.\nPossible values: \"center\", \"left\", \"top\", \"right\", \"bottom\", \"topLeft\", \"topRight\", \"bottomLeft\", \"bottomRight\"")]
         public BackgroundImageAlignment? ImageAlignment { get; set; }
 
-        [Option('s', "strech", Required = false, HelpText = "Sets how the background image is resized to fill the window.")]
+        [Option('s', "strech", Required = false, HelpText = "Sets how the background image is resized to fill the window.\nPossible values: \"none\", \"fill\", \"uniform\", \"uniformToFill\"")]
         public BackgrounStrechMode? ImageStrechMode { get; set; }
 
         [Option('o', "opacity", Required = false, HelpText = "Sets the transparency of the background image. Accepts floating point values from 0-1.")]
         public float? ImageOpacity { get; set; }
 
-        [Option('c', "color", Required = false, HelpText = "Sets the background color of the text. Overrides \"background\" from the color scheme. Uses hex color format: \"#rrggbb\".")]
+        [Option('c', "color", Required = false, HelpText = "Sets the background color of the text. Overrides \"background\" from the color scheme.\nUses hex color format: \"#rrggbb\".")]
         public string BackgroundColor { get; set; }
 
         public override int Run(Terminal.Terminal config)
