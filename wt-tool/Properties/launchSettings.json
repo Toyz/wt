@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "wt-tool": {
+      "commandName": "Project",
+      "commandLineArgs": "background --opacity=0.1"
+    }
+  }
+}
